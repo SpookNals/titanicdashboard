@@ -135,16 +135,13 @@ for dataset in data:
     # Drop the temporary 'Fare_bin' column after imputation
     dataset.drop(columns=['Fare_bin'], inplace=True)
 
-    ######## Model-Based Imputation ########
-
     # Prepare data for model-based imputation of Deck
     # Use the rows where Deck is known for training the model
-    train_data = dataset[dataset['Deck'] != 'Unknown']
+    train_data = dataset[dataset['Deck'] != 'U']
     test_data_unknown = dataset[dataset['Deck'] == 'U']
 
-    # You may need to adjust feature names after one-hot encoding
     # Define features and target
-    features = ['Pclass', 'Fare', 'Age', 'SibSp', 'Parch', 'Sex', 'Embarked']  # Simplified features list
+    features = ['Fare', 'Age']
 
     # Train a Random Forest Classifier to predict Deck
     X_train = train_data[features]
