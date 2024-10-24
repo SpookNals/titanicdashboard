@@ -761,3 +761,153 @@ def new_plots(st, pd, np,  df, df_test):
     with col2:
         fig = vip_per_deck(df_test)
         st.plotly_chart(fig)
+    
+    st.write('---')
+    st.subheader('Overlevingskansen per familie grootte')
+    col1, col2 = st.columns([1, 1])
+
+    def survival_per_family_size(df):
+        # Calculate the family size for each passenger
+        df['Family_Size'] = df['SibSp'] + df['Parch'] + 1
+
+        # Group the data by family size and survival status
+        survived_counts = df[df['Survived'] == 1].groupby('Family_Size').size()
+        not_survived_counts = df[df['Survived'] == 0].groupby('Family_Size').size()
+
+        # Create a bar trace for survived passengers
+        trace_survived = go.Bar(
+            x=survived_counts.index,  # Family sizes
+            y=survived_counts.values,  # Number of survivors
+            name='Survived',
+            marker=dict(color='purple')  # Purple for survivors
+        )
+
+        # Create a bar trace for non-survived passengers
+        trace_not_survived = go.Bar(
+            x=not_survived_counts.index,  # Family sizes
+            y=not_survived_counts.values,  # Number of non-survivors
+            name='Not Survived',
+            marker=dict(color='pink')  # Pink for non-survivors
+        )
+
+        # Calculate survival rate per family size
+        total_counts = survived_counts + not_survived_counts
+        survival_rate = survived_counts / total_counts
+
+        # Create a line trace for survival rate
+        trace_survival_rate = go.Scatter(
+            x=survival_rate.index,  # Family sizes
+            y=survival_rate.values,  # Survival rate
+            name='Survival Rate',
+            mode='lines+markers',
+            yaxis='y2',  # Plot on secondary y-axis
+            line=dict(color='orchid', width=3),  # Blue line
+            marker=dict(size=8)  # Marker size for the points
+        )
+
+        # Create the figure and add all traces
+        fig = go.Figure(data=[trace_survived, trace_not_survived, trace_survival_rate])
+
+        # Update layout settings, including a secondary y-axis for the survival rate
+        fig.update_layout(
+            xaxis_title='Familie Grootte',
+            yaxis_title='Aantal Passagiers',
+            barmode='group',  # Group the bars side by side
+            yaxis2=dict(
+                overlaying='y',  # Overlay on top of the primary y
+                side='right',
+                range=[0, 1]  # Survival rate is a proportion between 0 and 1
+            ),
+            legend=dict(
+                orientation="h",  # Horizontal legend
+                yanchor="bottom",  # Anchor the legend at the bottom
+                y=1.1,  # Position it above the plot
+                xanchor="center",
+                x=0.5  # Center the legend horizontally
+            )
+        )
+        return fig
+    
+    with col1:
+        fig = survival_per_family_size(df)
+        st.plotly_chart(fig)
+    
+    with col2:
+        fig = survival_per_family_size(df_test)
+        st.plotly_chart(fig)
+    
+
+    st.write('---')
+    st.subheader('Overlevingskansen als je alleen reist')
+    col1, col2 = st.columns([1, 1])
+
+    def survival_alone(df):
+        # Create a new column to indicate whether the passenger is traveling alone
+        df['Alone'] = (df['SibSp'] + df['Parch']) == 0
+        df['Alone'] = df['Alone'].map({True: 'Alleen', False: 'Niet Alleen'})
+
+        # Group the data by the 'Alone' column and calculate the number of survivors and non-survivors
+        survived_counts = df[df['Survived'] == 1].groupby('Alone').size()
+        not_survived_counts = df[df['Survived'] == 0].groupby('Alone').size()
+
+        # Create a bar trace for survived passengers
+        trace_survived = go.Bar(
+            x=survived_counts.index,  # 'Alleen' or 'Niet Alleen'
+            y=survived_counts.values,  # Number of survivors
+            name='Survived',
+            marker=dict(color='purple')  # Purple for survivors
+        )
+
+        # Create a bar trace for non-survived passengers
+        trace_not_survived = go.Bar(
+            x=not_survived_counts.index,  # 'Alleen' or 'Niet Alleen'
+            y=not_survived_counts.values,  # Number of non-survivors
+            name='Not Survived',
+            marker=dict(color='pink')  # Pink for non-survivors
+        )
+
+        # Calculate survival rate for passengers traveling alone and with family
+        total_counts = survived_counts + not_survived_counts
+        survival_rate = survived_counts / total_counts
+
+        # Create a line trace for survival rate
+        trace_survival_rate = go.Scatter(
+            x=survival_rate.index,  # 'Alleen' or 'Niet Alleen'
+            y=survival_rate.values,  # Survival rate
+            name='Survival Rate',
+            mode='lines+markers',
+            yaxis='y2',  # Plot on secondary y-axis
+            line=dict(color='orchid', width=3),  # Blue line
+            marker=dict(size=8)  # Marker size for the points
+        )
+
+        # Create the figure and add all traces
+        fig = go.Figure(data=[trace_survived, trace_not_survived, trace_survival_rate])
+
+        # Update layout settings, including a secondary y-axis for the survival rate
+        fig.update_layout(
+            xaxis_title='Reisstatus',
+            yaxis_title='Aantal Passagiers',
+            barmode='group',  # Group the bars side by side
+            yaxis2=dict(
+                overlaying='y',  # Overlay on top of the primary y-axis
+                side='right',
+                range=[0, 1]  # Survival rate is a proportion between 0 and 1
+            ),
+            legend=dict(
+                orientation="h",  # Horizontal legend
+                yanchor="bottom",  # Anchor the legend at the bottom
+                y=1.1,  # Position it above the plot
+                xanchor="center",
+                x=0.5  # Center the legend horizontally
+            )
+        )
+        return fig
+
+    with col1:
+        fig = survival_alone(df)
+        st.plotly_chart(fig)
+    
+    with col2:
+        fig = survival_alone(df_test)
+        st.plotly_chart(fig)
