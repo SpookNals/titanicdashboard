@@ -142,6 +142,10 @@ def new_plots(st, pd, np,  df, df_test):
         horizontal=True
     )
 
+    min_age = min(df_survived['Age'].min(), df_not_survived['Age'].min())
+    max_age = max(df_survived['Age'].max(), df_not_survived['Age'].max())
+    min_fare = min(df_survived['Fare'].min(), df_not_survived['Fare'].min())
+    max_fare = max(df_survived['Fare'].max(), df_not_survived['Fare'].max())
 
     col1, col2 = st.columns([1, 1])
 
@@ -165,8 +169,8 @@ def new_plots(st, pd, np,  df, df_test):
                 if filter_class == 'All' or cls == int(filter_class.split()[-1]):
                     subset_survived = df_survived_filtered[df_survived_filtered['Pclass'] == cls]
                     fig.add_trace(go.Scatter(
-                        x=subset_survived['Fare'],
-                        y=subset_survived['Age'],
+                        x=subset_survived['Age'],
+                        y=subset_survived['Fare'],
                         mode='markers',
                         name=f'Survived - Class {cls}',
                         marker=dict(
@@ -184,8 +188,8 @@ def new_plots(st, pd, np,  df, df_test):
                 if filter_class == 'All' or cls == int(filter_class.split()[-1]):
                     subset_not_survived = df_not_survived_filtered[df_not_survived_filtered['Pclass'] == cls]
                     fig.add_trace(go.Scatter(
-                        x=subset_not_survived['Fare'],
-                        y=subset_not_survived['Age'],
+                        x=subset_not_survived['Age'],
+                        y=subset_not_survived['Fare'],
                         mode='markers',
                         name=f'Not Survived - Class {cls}',
                         marker=dict(
@@ -199,8 +203,10 @@ def new_plots(st, pd, np,  df, df_test):
 
         # Update layout settings
         fig.update_layout(
-            xaxis_title='Ticket Prijs',
-            yaxis_title='Leeftijd',
+            xaxis_title='Leeftijd',
+            yaxis_title='Ticket Prijs',
+            xaxis_range=[min_age, max_age],  # Static x-axis range
+            yaxis_range=[min_fare, max_fare],  # Static y-axis range
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
@@ -669,27 +675,40 @@ def new_plots(st, pd, np,  df, df_test):
     col1, col2 = st.columns([1, 1])
 
     def vip_per_deck(df):
-       # Filter the DataFrame for passengers with the title 'VIP'
+        # Filter the DataFrame for passengers with the title 'VIP'
         vip_data = df[df['Title'] == 'Vip']
 
-        # Group by Deck and count the number of VIPs per deck
-        vip_counts = vip_data['Deck'].value_counts()
+        # Separate the data for VIPs who survived and those who did not
+        vip_survived = vip_data[vip_data['Survived'] == 1]
+        vip_not_survived = vip_data[vip_data['Survived'] == 0]
 
-        # Create a bar trace for VIP counts per deck
-        trace_vip = go.Bar(
-            x=vip_counts.index,  # Decks
-            y=vip_counts.values,  # Number of VIPs
-            name='VIP Count',
+        # Group by Deck and count the number of VIPs per deck for each category
+        survived_counts = vip_survived['Deck'].value_counts()
+        not_survived_counts = vip_not_survived['Deck'].value_counts()
+
+        # Create bar traces for VIPs who survived and VIPs who did not survive
+        trace_survived = go.Bar(
+            x=survived_counts.index,  # Decks
+            y=survived_counts.values,  # Number of survived VIPs
+            name='Survived',
             marker=dict(color='purple')
         )
 
-        # Create the figure and add the trace
-        fig = go.Figure(data=[trace_vip])
+        trace_not_survived = go.Bar(
+            x=not_survived_counts.index,  # Decks
+            y=not_survived_counts.values,  # Number of not survived VIPs
+            name='Not Survived',
+            marker=dict(color='orchid')
+        )
+
+        # Create the figure and add both traces
+        fig = go.Figure(data=[trace_survived, trace_not_survived])
 
         # Update layout settings
         fig.update_layout(
             xaxis_title='Deck',
             yaxis_title='Aantal VIPs',
+            barmode='group',  # Group bars next to each other
             legend=dict(
                 orientation="h",  # Horizontal legend
                 yanchor="bottom",  # Anchor the legend at the bottom
@@ -698,7 +717,10 @@ def new_plots(st, pd, np,  df, df_test):
                 x=0.5  # Center the legend horizontally
             )
         )
+
         return fig
+
+
 
     with col1:
         fig = vip_per_deck(df)
