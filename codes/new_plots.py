@@ -268,7 +268,7 @@ def new_plots(st, pd, np,  df, df_test):
             y=circle_y,
             mode='lines',
             name='Data Density Area',
-            line=dict(color='#FFD700', dash='dash'),
+            line=dict(color='yellow', dash='dash'),
             showlegend=True
         ))
 
