@@ -17,7 +17,7 @@ st.set_page_config(
 
 st.title('Titanic Case')
 
-tab1, tab2, tab3, tab4, = st.tabs(["Data Cleaning", "Predictie","Visualisaties Orgineel","Visualisaties Verbeterd"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Data Cleaning", "Predictie","Visualisaties Orgineel","Visualisaties Verbeterd", "bronnen"])
 
 
 
@@ -92,3 +92,20 @@ with tab4:
     new_train_data = pd.read_csv('train_categorical.csv')
     new_plots(st, pd , np, new_train_data, new_test_data)
 
+with tab5:
+    text = """
+    ### Bronnen voor het maken van plots en Machine Learning
+
+    Het maken van de plotten met behulp van Plotly is voornamelijk gedaan met de kennis uit **DataCamp**. 
+    - [DataCamp](https://app.datacamp.com/learn/assignments)
+
+    Voor de Machine Learning hebben we gebruik gemaakt van dit voorbeeld op **Kaggle**:
+    - [Kaggle Titanic Tutorial](https://www.kaggle.com/code/alexisbcook/titanic-tutorial)
+
+    Voor het oplossen van errors die we kregen in de code en voor hulp bij het maken van plots:
+    - [ChatGPT](https://chatgpt.com/)
+
+    Dit is een voorbeeld dat we vonden over hoe iemand anders de Titanic-opdracht heeft uitgevoerd, maar we hebben dit achteraf niet echt gebruikt:
+    - [GitHub - Titanic Classification](https://github.com/murilogustineli/Titanic-Classification/blob/main/Titanic%20Project.ipynb)
+    """
+    st.markdown(text)
