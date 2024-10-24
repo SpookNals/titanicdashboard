@@ -1,6 +1,6 @@
 import streamlit as st
 from codes.col1_datacleaning import col1_age, col1_fare, col1_cabin, col1_embarked
-from codes.col2_datacleaning import col2_age, col2_fare, col2_cabin, col2_embarked, col2_relatives, col2_title
+from codes.col2_datacleaning import col2_age, col2_fare, col2_cabin, col2_embarked, col2_relatives, col2_title, col2_numeric_features
 from codes.og_plots import og_plots
 from codes.new_plots import new_plots
 from codes.prediction import prediction
@@ -58,6 +58,10 @@ with tab1:
     col1, col2 = st.columns([1, 1])
     with col2:
         col2_title(st)
+    
+    col1, col2 = st.columns([1, 1])
+    with col2:
+        col2_numeric_features(st)
 
 with tab2:
     col1, col2 = st.columns([1, 1])
