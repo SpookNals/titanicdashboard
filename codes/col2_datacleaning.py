@@ -1,21 +1,8 @@
 def col2_age(st):
     st.subheader('Age Column')
     code = """
-genders = {'male': 0, 'female': 1}
-ports = {"S": 0, "C": 1, "Q": 2}
-
-data = [df_train, df_test]
-
-for dataset in data:
-
-    dataset['Sex'] = dataset['Sex'].map(genders)
-    dataset['Embarked'] = dataset['Embarked'].map(ports)
-
-df_train = data[0]
-df_test = data[1]
-
 # features voor het voorspellen van de leeftijd
-features = ['Pclass', 'Sex', 'SibSp', 'Parch', 'Fare', 'Embarked']
+features = ['Pclass','SibSp','Parch' ]
 
 data = [df_train, df_test]
 for dataset in data:
@@ -165,7 +152,7 @@ df_test = data[1]
     st.code(code, language='python')
 
     code = """
-deck = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "U": 8, "T": 9}
+deck = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "T": 8}
 
 data = [df_train, df_test]
 for dataset in data:
@@ -258,3 +245,22 @@ df_train = data[0]
 df_test = data[1]
 """
     st.code(code, language='python')
+
+def col2_numeric_features(st):
+    st.subheader('Additional Numeric Features')
+    code = """
+genders = {'male': 0, 'female': 1}
+ports = {"S": 0, "C": 1, "Q": 2}
+
+data = [df_train, df_test]
+
+for dataset in data:
+
+    dataset['Sex'] = dataset['Sex'].map(genders)
+    dataset['Embarked'] = dataset['Embarked'].map(ports)
+
+
+df_train = data[0]
+df_test = data[1]
+"""
+    st.code(code, language='python')	

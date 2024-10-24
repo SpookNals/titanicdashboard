@@ -56,5 +56,5 @@ results = pd.DataFrame({'Model': ['Random Forest'],\
         st.write("""
                 Model
 Score	
-92.26	Random Forest
+92.37	Random Forest
 """)
