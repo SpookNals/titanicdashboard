@@ -33,8 +33,7 @@ features = ['Pclass','Sex','Age','SibSp','Parch','Fare','Embarked','Deck','is_al
 
 X_train = df_train[features]
 Y_train = df_train['Survived']
-X_Test = df_test.drop(['PassengerId'], axis= 1).copy()
-X_Test = X_Test[features]
+X_Test = df_test[features]
 """
         st.code(code, language='python')
 

@@ -91,7 +91,7 @@ def new_plots(st, pd, np,  df, df_test):
                 labels=['Did Not Survive', 'Survived'],
                 values=survival_counts.values,
                 hole=0.4,  # Creates a donut chart
-                marker_colors=['orchid', 'purple'],
+                marker_colors=['pink', 'purple'],
                 textinfo='label+percent',
                 textposition='outside',
                 pull=[0.1, 0],  # Pulls out the first slice slightly
@@ -162,7 +162,18 @@ def new_plots(st, pd, np,  df, df_test):
         # Create a figure for the scatter plot
         fig = go.Figure()
 
-        # Apply filtering for both survival status and class
+        # Combine survived and not survived data for easier filtering and density calculation
+        if filter_survival == 'Both':
+            combined_data = pd.concat([df_survived, df_not_survived])
+        elif filter_survival == 'Survived':
+            combined_data = df_survived
+        else:
+            combined_data = df_not_survived
+
+        # Apply class filter on the combined data
+        combined_data_filtered = class_filter(combined_data, filter_class)
+
+        # Plot the survived points if applicable
         if filter_survival == 'Survived' or filter_survival == 'Both':
             df_survived_filtered = class_filter(df_survived, filter_class)
             for cls in [1, 2, 3]:
@@ -182,6 +193,7 @@ def new_plots(st, pd, np,  df, df_test):
                         )
                     ))
 
+        # Plot the not-survived points if applicable
         if filter_survival == 'Not Survived' or filter_survival == 'Both':
             df_not_survived_filtered = class_filter(df_not_survived, filter_class)
             for cls in [1, 2, 3]:
@@ -200,6 +212,26 @@ def new_plots(st, pd, np,  df, df_test):
                             line=dict(width=1, color='black')
                         )
                     ))
+
+        # Now calculate the center and spread of the filtered data
+        mean_age = combined_data_filtered['Age'].mean()
+        mean_fare = combined_data_filtered['Fare'].mean()
+        std_age = combined_data_filtered['Age'].std()
+        std_fare = combined_data_filtered['Fare'].std()
+
+        # Add a circle to highlight the region with most data points (based on filtered data)
+        theta = np.linspace(0, 2 * np.pi, 100)
+        circle_x = mean_age + std_age * np.cos(theta)
+        circle_y = mean_fare + std_fare * np.sin(theta)
+
+        fig.add_trace(go.Scatter(
+            x=circle_x,
+            y=circle_y,
+            mode='lines',
+            name='Data Density Area',
+            line=dict(color='#FFD700', dash='dash'),
+            showlegend=True
+        ))
 
         # Update layout settings
         fig.update_layout(
@@ -302,7 +334,7 @@ def new_plots(st, pd, np,  df, df_test):
                 labels=['Did Not Survive', 'Survived'],
                 values=male_stats.values,
                 hole=0.4,
-                marker_colors=['orchid', 'purple'],
+                marker_colors=['pink', 'purple'],
                 textinfo='label+percent',
                 textposition='outside',
                 pull=[0.1, 0],
@@ -320,7 +352,7 @@ def new_plots(st, pd, np,  df, df_test):
                 labels=['Survived', 'Did Not Survive'],
                 values=female_stats.values,
                 hole=0.4,
-                marker_colors=['purple', 'orchid'],
+                marker_colors=['purple', 'pink'],
                 textinfo='label+percent',
                 textposition='outside',
                 pull=[0.1, 0],
@@ -698,7 +730,7 @@ def new_plots(st, pd, np,  df, df_test):
             x=not_survived_counts.index,  # Decks
             y=not_survived_counts.values,  # Number of not survived VIPs
             name='Not Survived',
-            marker=dict(color='orchid')
+            marker=dict(color='pink')
         )
 
         # Create the figure and add both traces
