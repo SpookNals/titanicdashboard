@@ -127,6 +127,45 @@ def new_plots(st, pd, np,  df, df_test):
         st.plotly_chart(fig, use_container_width=True)
 
     st.write('---')
+    st.subheader('Overlevingskansen per Leeftijd')
+    col1, col2 = st.columns([1, 1])
+
+    def create_age_survival_histogram(df):
+        # map the survival status to a more descriptive label
+        df['Survived_Label'] = df['Survived'].replace({0: 'Not Survived', 1: 'Survived'})
+
+        # Create the histogram for Age vs. Survival status
+        fig = px.histogram(
+            df,
+            x='Age',
+            color='Survived_Label',
+            barmode='overlay',  # Overlay the two histograms for comparison
+            color_discrete_map={'Not Survived': 'pink', 'Survived': 'purple'},
+            category_orders={'Survived': [0, 1]},
+            nbins=40,  # Adjust the number of bins (optional)
+        )
+
+        # Update layout settings
+        fig.update_layout(
+            xaxis_title='Age',
+            yaxis_title='Count',
+            xaxis_range=[0, 80],  # Static x-axis range
+            yaxis_range=[0, 60],  # Static y-axis range
+            showlegend=True,  # Show the legend for Survived/Not Survived
+            bargap=0.1  # Gap between bars
+        )
+        return fig
+
+    # Display the histograms in two columns
+    with col1:
+        fig = create_age_survival_histogram(df)
+        st.plotly_chart(fig)
+
+    with col2:
+        fig = create_age_survival_histogram(df_test)
+        st.plotly_chart(fig)
+
+    st.write('---')
     st.subheader('Ticket prijs tegen leeftijd met klasse')
 
     filter_survival = st.radio(
