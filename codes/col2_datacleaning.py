@@ -1,5 +1,5 @@
 def col2_age(st):
-    st.subheader('Age Column')
+    st.subheader('Leeftijd Kolom')
     code = """
 # features voor het voorspellen van de leeftijd
 features = ['Pclass','SibSp','Parch' ]
@@ -45,7 +45,7 @@ df_test = data[1]
     st.code(code, language='python')
 
 def col2_fare(st):
-    st.subheader('Fare Column')
+    st.subheader('Ticket Prijs Kolom')
     code = """
 data = [df_train, df_test]
 for dataset in data:
@@ -90,7 +90,7 @@ df_test = data[1]
     st.code(code, language='python')
 
 def col2_cabin(st):
-    st.subheader('Cabin Column')
+    st.subheader('Kajuit Kolom')
 
     code = """
 data = [df_train, df_test]
@@ -168,7 +168,7 @@ df_test = data[1]
     st.code(code, language='python')
 
 def col2_embarked(st):
-    st.subheader('Embarked Column')
+    st.subheader('Opstapplaats Kolom')
     code = """
 data = [df_train, df_test]
 
@@ -191,7 +191,7 @@ df_test = data[1]
     st.code(code, language='python')
 
 def col2_relatives(st):
-    st.subheader('Relatives Column/ Is Alone Column')
+    st.subheader('Familie Kolommen')
     code = """
 # sibssp and parch
 data = [df_train, df_test]
@@ -207,7 +207,7 @@ df_test = data[1]
     st.code(code, language='python')
 
 def col2_title(st):
-    st.subheader('Title Column')
+    st.subheader('Aanspreek Titel Kolom')
     code = """
 data = [df_train, df_test]
 for dataset in data:
@@ -247,7 +247,7 @@ df_test = data[1]
     st.code(code, language='python')
 
 def col2_numeric_features(st):
-    st.subheader('Additional Numeric Features')
+    st.subheader('Numerieke Features')
     code = """
 genders = {'male': 0, 'female': 1}
 ports = {"S": 0, "C": 1, "Q": 2}

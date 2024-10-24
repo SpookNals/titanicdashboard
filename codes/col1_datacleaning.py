@@ -1,5 +1,5 @@
 def col1_age(st):
-    st.subheader('Age Column')
+    st.subheader('Leeftijd Kolom')
     code = """
 # er zijn nog steeds missende waarden in de Age kolom
 # we kunnen deze vervangen door de gemiddelde leeftijd van de passagiers te nemen    
@@ -19,7 +19,7 @@ df_test['Age_group'] = pd.cut(df_test['Age'], bins)
     st.code(code, language='python')
 
 def col1_fare(st):
-    st.subheader('Fare Column')
+    st.subheader('Ticket Prijs Kolom')
     code = """
 # Kolom 'Fare' heeft 1 onbekende waarde in de test data, dus we vervangen deze door de gemiddelde waarde
 mean_fare = df_test['Fare'].mean()
@@ -43,7 +43,7 @@ print(df['Fare_group'].value_counts())
 """
 
 def col1_cabin(st):
-    st.subheader('Cabin Column')
+    st.subheader('Kajuit Kolom')
     code = """
 # verwijder de 'Cabin' kolom, want deze bevat te veel missende waardes
 df = df.drop('Cabin', axis=1)
@@ -52,7 +52,7 @@ df_test = df_test.drop('Cabin', axis=1)
     st.code(code, language='python')
 
 def col1_embarked(st):
-    st.subheader('Embarked Column')
+    st.subheader('Opstapplaats Kolom')
     code = """
 # er zijn twee missende waardes in de Test dataset. In 'Embarked'. Deze kolom is erg belangrijk voor de voorspelling.
 # Omdat het er maar twee zijn voegen we de meest voorkomende waarde toe.
