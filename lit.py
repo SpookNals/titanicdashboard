@@ -176,10 +176,10 @@ def show_map():
             showcountries = True,
             coastlinecolor = "black",
             showland = True,
-            landcolor = "rgb(229, 236, 246)",
+            landcolor = "rgb(88, 96, 107)",
             countrycolor = "black",
             showocean = True,
-            oceancolor = "lightblue",
+            oceancolor = "black",
             center = dict(
                 lon = mean_lon,  # Center at mean longitude
                 lat = mean_lat   # Center at mean latitude
