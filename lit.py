@@ -94,7 +94,6 @@ def show_new_plots():
 
 def show_map():
     import plotly.graph_objects as go
-    import streamlit as st
 
     df = pd.read_csv('train_categorical.csv')
 
