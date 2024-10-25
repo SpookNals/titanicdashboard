@@ -95,7 +95,14 @@ def show_new_plots():
 def show_map():
     import plotly.graph_objects as go
 
-    df = pd.read_csv('train_categorical.csv')
+    # Create a selectbox
+    dataset = st.selectbox('Selecteer de dataset', ['train_categorical.csv', 'test_categorical.csv'])
+    df = pd.read_csv(dataset)
+
+    if dataset == 'train_categorical.csv':
+        title = 'Titanic Route - Train Data'
+    else:
+        title = 'Titanic Route - Test Data'
 
     # Titanic's route coordinates (in latitude, longitude format)
     locations = {
@@ -164,7 +171,7 @@ def show_map():
     # Customize map layout
     fig.update_layout(
         title = {
-            'text': 'Titanic Route Map',
+            'text': title,
             'font': {'size': 24},
             'y': 0.95,
             'x': 0.5,
