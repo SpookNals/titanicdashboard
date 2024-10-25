@@ -169,14 +169,14 @@ def new_plots(st, pd, np,  df, df_test):
     st.subheader('Ticket prijs tegen leeftijd met klasse')
 
     filter_survival = st.radio(
-        'Filter by survival status:',
+        'Filter op overlevingsstatus:',
         ('Both', 'Survived', 'Not Survived'),
         horizontal=True
     )
 
     # Horizontal radio button to filter by class (Pclass)
     filter_class = st.radio(
-        'Filter by class:',
+        'Filter op klasse:',
         ('All', 'Class 1', 'Class 2', 'Class 3'),
         horizontal=True
     )
